@@ -41,7 +41,7 @@ llvm-sys-90 = { package = "llvm-sys", version = "90.2.2", optional = true }
 inkwell-100 = { package = "inkwell", path = "inkwell", optional = true, default-features = false, features = ["target-x86", "llvm10-0"] }
 llvm-sys-100 = { package = "llvm-sys", version = "100.2.4", optional = true }
 
-inkwell-110 = { package = "inkwell", path = "inkwell", optional = true, default-features = false, features = ["target-x86", "llvm11-0"] }
+inkwell-110 = { package = "inkwell", path = "inkwell", optional = true, default-features = false, features = ["target-x86", "llvm11-0", "vtune"] }
 llvm-sys-110 = { package = "llvm-sys", version = "110.0.4", optional = true }
 
 inkwell-120 = { package = "inkwell", path = "inkwell", optional = true, default-features = false, features = ["target-x86", "llvm12-0"] }
