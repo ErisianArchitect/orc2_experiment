@@ -232,11 +232,11 @@ fn lockfree_linked_list_experiment() {
             }
         }
     }
-    impl<T: Sized + 'static> Drop for NodePtr<T> {
-        fn drop(&mut self) {
-            self.delete();
-        }
-    }
+    // impl<T: Sized + 'static> Drop for NodePtr<T> {
+    //     fn drop(&mut self) {
+    //         self.delete();
+    //     }
+    // }
     struct List<T: Sized + 'static> {
         // Placed in a Box so that there is a stable pointer to the AtomicPtr<Node<T>>.
         // This makes it possible to set the handle pointer for the first node to the head of the list.
@@ -337,6 +337,32 @@ fn lockfree_linked_list_experiment() {
             }
         }
     }
+    #[repr(transparent)]
+    struct OnDrop(u32);
+    impl Drop for OnDrop {
+        fn drop(&mut self) {
+            println!("On Drop: {0}", self.0);
+        }
+    }
+    let list = List::new();
+    list.push(OnDrop(0));
+    let mut nodes = vec![];
+    nodes.push(list.push(OnDrop(1)));
+    nodes.push(list.push(OnDrop(2)));
+    nodes.push(list.push(OnDrop(3)));
+    nodes.push(list.push(OnDrop(4)));
+    nodes.push(list.push(OnDrop(5)));
+    nodes.push(list.push(OnDrop(6)));
+    nodes.push(list.push(OnDrop(7)));
+    nodes.push(list.push(OnDrop(8)));
+    nodes.push(list.push(OnDrop(9)));
+    nodes.push(list.push(OnDrop(10)));
+    for node in nodes.iter_mut().take(5) {
+        node.delete();
+    }
+    list.push(OnDrop(11));
+    drop(list);
+    println!("Finished.");
 }
 
 fn main() {
